@@ -1,8 +1,8 @@
 all :
 	exo1 exo2
 	
-exo2 :
-	g++ codec.cpp ScreenCapture.cpp fifo.cpp sender.cpp receiver.cpp exo2.cpp -pthread -lrt -L/usr/lib/x86_64-linux-gnu/ -lavcodec -lavutil -lopencv_imgcodecs -I/usr/local/include/opencv4/opencv2/include/ `pkg-config --cflags --libs opencv` -lX11 -w -o exo2
+display_com :
+	g++ codec.cpp ScreenCapture.cpp fifo.cpp sender.cpp receiver.cpp screen_communication.cpp -pthread -lrt -L/usr/lib/x86_64-linux-gnu/ -lavcodec -lavutil -lopencv_imgcodecs -I/usr/local/include/opencv4/opencv2/include/ `pkg-config --cflags --libs opencv` -lX11 -w -o screen_comm
 
-exo1:
-	g++ exo1.cpp codec.cpp ScreenCapture.cpp -L/usr/lib/x86_64-linux-gnu/ -lavcodec -lavutil -lopencv_imgcodecs -I/usr/local/include/opencv4/opencv2/include/ `pkg-config --cflags --libs opencv` -lX11 -w -o exo1
+display:
+	g++ -L/usr/local/lib/ ScreenCapture.cpp codec.cpp  screen_save.cpp -lyuv -L/usr/lib/x86_64-linux-gnu/ -lavcodec -lavutil -lopencv_imgcodecs -I/usr/local/include/opencv4/opencv2/include/ `pkg-config --cflags --libs opencv` -lX11 -w -o screen_save

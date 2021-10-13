@@ -18,7 +18,7 @@ class mon_codec
 
         int init(AVCodecID id, int w, int h, AVPixelFormat px, int fps);
 
-        void encode(cv::Mat mat, AVPacket *pkt_out);
+        void encode(cv::Mat mat, AVFrame *f, AVPacket *pkt_out);
         int finish_encode(AVPacket *pkt_out);
 
         void decode(cv::Mat mat, AVPacket *pkt);

@@ -1,0 +1,15 @@
+https://programmer.help/blogs/scaling-of-nv12-format-pictures-based-on-libyuv-library.html
+https://groups.google.com/g/comp.windows.x/c/Ic2GVvSmfNE
+
+https://docs.opencv.org/3.4.15/de/d25/imgproc_color_conversions.html
+
+
+https://chromium.googlesource.com/libyuv/libyuv/+/refs/heads/main/docs/getting_started.md
+
+cmake -DHAVE_JPG=OFF ..
+mkdir build && cd build
+make && make install
+
+-I/usr/local/include/libyuv/ -L/usr/local/lib/ -libyuv
+
+32 bpp : 8/8/8/8 avec RGBN, where N is the null bit (0), LSB first so NBGR

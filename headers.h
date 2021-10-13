@@ -13,6 +13,9 @@
 #include <X11/Xutil.h>
 #include <signal.h>
 
+#include "libyuv.h"
+#include "libyuv/convert.h"
+
 extern bool running;
 
 #endif

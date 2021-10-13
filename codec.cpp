@@ -45,16 +45,18 @@ int mon_codec::init(AVCodecID id, int w, int h, AVPixelFormat px, int fps)
     nb = 0;
 }
 
-void mon_codec::encode(cv::Mat mat, AVPacket *pkt_out)
+void mon_codec::encode(cv::Mat mat, AVFrame* f, AVPacket *pkt_out)
 {
     AVPacket pkt;
     int ret, got;
-    cv::Mat spl[3];
+/*    cv::Mat spl[3];
     cv::split(mat, spl);
     frame->data[0] = spl[0].data;
     frame->data[1] = spl[1].data;
     frame->data[2] = spl[2].data;
-    
+*/    
+    frame = av_frame_clone(f);
+
     av_init_packet(&pkt);
     pkt.data = NULL;
     pkt.size = 0;
