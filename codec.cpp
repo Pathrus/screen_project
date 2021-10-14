@@ -1,6 +1,6 @@
 #include "codec.hpp"
 
-mon_codec::mon_codec() {}
+mon_codec::mon_codec() :nb(0) {}
 
 int mon_codec::init(AVCodecID id, int w, int h, AVPixelFormat px, int fps)
 {
@@ -42,7 +42,6 @@ int mon_codec::init(AVCodecID id, int w, int h, AVPixelFormat px, int fps)
     frame->width = w;
     frame->format = px;
     av_frame_get_buffer(frame, 0);
-    nb = 0;
 }
 
 void mon_codec::encode(cv::Mat mat, AVFrame* f, AVPacket *pkt_out)

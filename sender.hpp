@@ -15,7 +15,7 @@ class sender
         void operator()();
         ~sender();
 
-    public:
+    private:
         fifo& fs;
         int nb, width, height;
         ScreenCapture sc;

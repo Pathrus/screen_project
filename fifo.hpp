@@ -28,7 +28,7 @@ class fifo
 
         ~fifo();
 
-    public:
+    private:
         std::mutex mutex_fifo;
         int max, nb;
         std::queue<AVPacket> queue;

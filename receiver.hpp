@@ -15,7 +15,7 @@ class receiver
         void render(cv::Mat mat, AVFrame *f);
         ~receiver();
 
-    public:
+    private:
         AVFrame *f;
         int width, height;
         mon_codec codec;

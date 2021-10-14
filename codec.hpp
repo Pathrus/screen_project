@@ -26,10 +26,9 @@ class mon_codec
 
         ~mon_codec();
 
-    public:
+    private:
         AVCodec *codec, *codec2;
         AVCodecContext *encoder, *decoder;
-        AVCodecParserContext *parser;
         AVFrame *frame;
         int nb;
 };

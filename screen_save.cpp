@@ -42,8 +42,8 @@ int main(int argc, char** argv)
         //libyuv::I420ToARGB(f->data[0], f->width, f->data[1], (f->width+1)/2, f->data[2], (f->width+1)/2, rgb.data, f->width*4, cap.width, cap.height);
         libyuv::I420ToARGB(f->data[0], f->width, f->data[1], (f->width+1)/2, f->data[2], (f->width+1)/2, rgb.data, f->width*4, cap.width, cap.height);
 
-        cv::imshow("receiver", rgb);
-        cv::waitKey(0);
+        //cv::imshow("receiver", rgb);
+        //cv::waitKey(0);
 
         c.encode(yuv, f, pkt);
         fwrite(pkt->data, 1, pkt->size, out);
