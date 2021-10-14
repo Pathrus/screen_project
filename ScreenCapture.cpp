@@ -4,10 +4,11 @@ ScreenCapture::ScreenCapture()
 {
     display = XOpenDisplay(nullptr);
     screen = DefaultScreenOfDisplay(display);
-    width = this->screen->width;
-    height = this->screen->height;
-    if(width%2)width -= width%2;
-    if(height%2)height -= height%2;
+    width = screen->width - screen->width%2;
+    height = screen->height -  screen->height%2;
+    //if(width%2)width -= width%2;
+    //if(height%2)height -= height%2;
+    printf("Init Screen WxH %dx%d\n", width, height);
 }
 
 cv::Mat ScreenCapture::GetImage()
@@ -16,6 +17,9 @@ cv::Mat ScreenCapture::GetImage()
     cv::Mat tmp(height, width, CV_8UC4,  img->data);
     return tmp;
 }
+
+int ScreenCapture::getWidth(){ return width;}
+int ScreenCapture::getHeight(){ return height;}
 
 ScreenCapture::~ScreenCapture()
 {

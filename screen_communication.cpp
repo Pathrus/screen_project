@@ -34,13 +34,13 @@ int main(int argc, char* argv[])
         ratio = 0.5;
     std::cout << "Début screen_communication - Ctrl+C pour stop" << std::endl;
     AVCodecID codec_id = AV_CODEC_ID_H264;
-    AVPixelFormat pix_fmt = AV_PIX_FMT_YUV444P;
+    AVPixelFormat pix_fmt = AV_PIX_FMT_YUV420P;
     int fps = 60;
     Display* display = XOpenDisplay(nullptr);
     Screen* screen = DefaultScreenOfDisplay(display);
     int width, height;
-    width = screen->width;
-    height = screen->height;
+    width = screen->width - screen->width%2;
+    height = screen->height - screen->height%2;
 
     XCloseDisplay(display);
     running = true;

@@ -21,8 +21,8 @@ class mon_codec
         void encode(cv::Mat mat, AVFrame *f, AVPacket *pkt_out);
         int finish_encode(AVPacket *pkt_out);
 
-        void decode(cv::Mat mat, AVPacket *pkt);
-        int finish_decode(cv::Mat mat);
+        void decode(cv::Mat mat, AVPacket *pkt, AVFrame *fout);
+        int finish_decode(cv::Mat mat, AVFrame *fout);
 
         ~mon_codec();
 

@@ -2,7 +2,12 @@
 
 sender::sender(fifo &fif, int rows, int cols, AVCodecID id, AVPixelFormat px, int fps) : fs(fif), width(rows), height(cols)
 {
-    codec.init(id, rows, cols, px, fps);
+    codec.init(id, sc.getWidth(), sc.getHeight(), px, fps);
+    f = av_frame_alloc();
+    f->width = sc.getWidth();
+    f->height = sc.getHeight();
+    f->format = px;
+    av_frame_get_buffer(f, 0);
 }
 
 void sender::send(AVPacket *pkt)
@@ -20,8 +25,9 @@ void sender::operator()()
     while(running)
     {
         img = sc.GetImage();
-        cv::cvtColor(img, yuv, cv::COLOR_BGR2YUV);
-        codec.encode(yuv, pkt);
+        libyuv::ARGBToI420(img.data, img.step, f->data[0], f->width, f->data[1], (f->width+1)/2, f->data[2], (f->width+1)/2, f->width, f->height);
+
+        codec.encode(yuv, f, pkt);
         if(pkt->size != 0)
         {
             send(pkt);

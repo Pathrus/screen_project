@@ -6,6 +6,11 @@ receiver::receiver(fifo &fif, int cols, int rows, float ratio, AVCodecID id, AVP
     width = cols;
     height = rows;
     this->ratio = ratio;
+    f = av_frame_alloc();
+    f->height = rows;
+    f->height = cols;
+    f->format = px;
+    av_frame_get_buffer(f, 0);
 }
 
 void receiver::getElem(AVPacket *pkt) { 
@@ -22,25 +27,27 @@ void receiver::operator()()
     while (running)
     {
         getElem(pkt);
-        codec.decode(out, pkt);
-        if(!out.empty()){
-            render(out);
+        codec.decode(out, pkt, f);
+        if(f->pts){
+            render(out, f);
         }
     }
     while(1)
     {
-        ret = codec.finish_decode(out);
+        ret = codec.finish_decode(out, f);
         if(ret < 0)
             return;
-        render(out);
+        render(out, f);
     }
 }
 
-void receiver::render(cv::Mat mat)
+void receiver::render(cv::Mat mat, AVFrame *f)
 {
+    cv::Mat rgb(height, width, CV_8UC4);
     cv::Mat res;
-    cv::cvtColor(mat, mat, cv::COLOR_YUV2BGR);
-    cv::resize(mat, res, cv::Size(), ratio, ratio);
+    libyuv::I420ToARGB(f->data[0], f->width, f->data[1], (f->width+1)/2, f->data[2], (f->width+1)/2, rgb.data, f->width*4, width, height);
+    av_frame_unref(f);
+    cv::resize(rgb, res, cv::Size(), ratio, ratio);
     cv::imshow("receiver", res);
     cv::waitKey(1);
 }

@@ -98,7 +98,7 @@ int mon_codec::finish_encode(AVPacket *pkt_out)
     return 0;
 }
 
-void mon_codec::decode(cv::Mat mat, AVPacket *pkt)
+void mon_codec::decode(cv::Mat mat, AVPacket *pkt, AVFrame *fout)
 {
     AVPacket d;
     av_init_packet(&d);
@@ -116,16 +116,20 @@ void mon_codec::decode(cv::Mat mat, AVPacket *pkt)
             fprintf(stderr, "Error decoding frame\n");
             exit(1);
         }
-
+/*
         cv::split(mat, c);
         c[0].data = f->data[0];
         c[1].data = f->data[1];
         c[2].data = f->data[2];
         cv::merge(c, 3, mat);
+*/
+        //av_frame_copy(fout, f);
+        av_frame_move_ref(fout, f);
+        //printf("pts3 %d\n", f->pts);
     }
 }
 
-int mon_codec::finish_decode(cv::Mat mat)
+int mon_codec::finish_decode(cv::Mat mat, AVFrame *fout)
 {
     AVFrame *f;
     f = av_frame_alloc();
@@ -141,12 +145,14 @@ int mon_codec::finish_decode(cv::Mat mat)
         fprintf(stderr, "Error encoding frame\n");
         exit(1);
     }
-
+/*
     cv::split(mat, c);
     c[0].data = f->data[0];
     c[1].data = f->data[1];
     c[2].data = f->data[2];
     cv::merge(c, 3, mat);
+*/    //av_frame_copy(fout, f);
+    av_frame_move_ref(fout, f);
     return 0;
 }
 

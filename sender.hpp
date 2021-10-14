@@ -20,6 +20,7 @@ class sender
         int nb, width, height;
         ScreenCapture sc;
         mon_codec codec;
+        AVFrame* f;
 };
 
 #endif

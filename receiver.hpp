@@ -12,10 +12,11 @@ class receiver
         receiver(fifo &fif, int cols, int rows, float ratio, AVCodecID id, AVPixelFormat px, int fps);
         void getElem(AVPacket *pkt);
         void operator()();
-        void render(cv::Mat mat);
+        void render(cv::Mat mat, AVFrame *f);
         ~receiver();
 
     public:
+        AVFrame *f;
         int width, height;
         mon_codec codec;
         fifo& fr;

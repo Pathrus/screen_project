@@ -10,9 +10,12 @@ class ScreenCapture
         cv::Mat GetImage();
         ~ScreenCapture();
 
+        int getWidth();
+        int getHeight();
+
     public :
-        int width;
-        int height;
+        int width, height;
+        //int height;
         Display* display;
         Screen* screen;
 };

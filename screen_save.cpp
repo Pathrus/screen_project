@@ -26,6 +26,7 @@ int main(int argc, char** argv)
     f->format = AV_PIX_FMT_YUV420P;
     av_frame_get_buffer(f, 0);
     cv::Mat yuv = cv::Mat(cap.height, cap.width, CV_8UC3);
+    cv::Mat rgb = cv::Mat(cap.height, cap.width, CV_8UC4);
     cv::Mat img;
 
     while(running)
@@ -33,7 +34,17 @@ int main(int argc, char** argv)
         img = cap.GetImage();
 
         //img in BGRA in memory, LSB so ARGB
+
+        printf("img step %d, cap.w %d .h %d, f->w %d, f->h %d\n", img.step, cap.width, cap.height, f->width, f->height);
         libyuv::ARGBToI420(img.data, img.step, f->data[0], cap.width, f->data[1], (cap.width+1)/2, f->data[2], (cap.width+1)/2, cap.width, cap.height);
+        //libyuv::ARGBToI420(img.data, img.step, f->data[0], f->width, f->data[1], (f->width+1)/2, f->data[2], (f->width+1)/2, f->width, f->height);
+        printf("img step %d, cap.w %d .h %d, f->w %d, f->h %d\n", img.step, cap.width, cap.height, f->width, f->height);
+        //libyuv::I420ToARGB(f->data[0], f->width, f->data[1], (f->width+1)/2, f->data[2], (f->width+1)/2, rgb.data, f->width*4, cap.width, cap.height);
+        libyuv::I420ToARGB(f->data[0], f->width, f->data[1], (f->width+1)/2, f->data[2], (f->width+1)/2, rgb.data, f->width*4, cap.width, cap.height);
+
+        cv::imshow("receiver", rgb);
+        cv::waitKey(0);
+
         c.encode(yuv, f, pkt);
         fwrite(pkt->data, 1, pkt->size, out);
     }
