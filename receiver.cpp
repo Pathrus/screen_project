@@ -1,16 +1,24 @@
 #include "receiver.hpp"
 
-receiver::receiver(fifo &fif, int cols, int rows, float ratio, AVCodecID id, AVPixelFormat px, int fps) : fr(fif)
+receiver::receiver(fifo &fif, int cols, int rows, float ratio, int fps) : fr(fif),\
+                codec(cols, rows, fps), sock("127.0.0.1", 1234)
 {
-    codec.init(id, cols, rows, px, fps);
+    //codec.init(id, cols, rows, px, fps);
+    //codec(id, cols, rows, px, fps);
     width = cols;
     height = rows;
     this->ratio = ratio;
     f = av_frame_alloc();
     f->height = rows;
     f->height = cols;
-    f->format = px;
+    f->format = AV_PIX_FMT_YUV420P;
     av_frame_get_buffer(f, 0);
+
+    //std::string ip = "";
+    
+    sock.binding();
+    sock.listening();
+    sock.accepting();
 }
 
 void receiver::getElem(AVPacket *pkt) { 
@@ -26,10 +34,11 @@ void receiver::operator()()
     
     while (running)
     {
-        getElem(pkt);
+        //getElem(pkt);
+        sock.recvFrom(reinterpret_cast<char*>(pkt->data), pkt->size);
         codec.decode(out, pkt, f);
         if(f->pts){
-            render(out, f);
+            //render(out, f);
         }
     }
     while(1)
@@ -37,7 +46,7 @@ void receiver::operator()()
         ret = codec.finish_decode(out, f);
         if(ret < 0)
             return;
-        render(out, f);
+        //render(out, f);
     }
 }
 

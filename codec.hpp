@@ -14,7 +14,11 @@ extern "C" {
 class mon_codec
 {
     public:
-        mon_codec();
+        //mon_codec() = delete;
+
+        //mon_codec();
+
+        mon_codec(int w, int h, int fps);
 
         int init(AVCodecID id, int w, int h, AVPixelFormat px, int fps);
 

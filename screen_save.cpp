@@ -15,8 +15,8 @@ int main(int argc, char** argv)
     uint8_t endcode[] = { 0, 0, 1, 0xb7 };
     int fps = 30;
     ScreenCapture cap;
-    mon_codec c;
-    c.init(AV_CODEC_ID_H264, cap.width, cap.height, AV_PIX_FMT_YUV420P, fps);
+    mon_codec c(AV_CODEC_ID_H264, cap.width, cap.height, AV_PIX_FMT_YUV420P, fps);;
+    //c.init(AV_CODEC_ID_H264, cap.width, cap.height, AV_PIX_FMT_YUV420P, fps);
 
     FILE *out = fopen("save.h264", "wb");
     AVPacket *pkt = av_packet_alloc();

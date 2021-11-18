@@ -1,6 +1,48 @@
 #include "codec.hpp"
 
-mon_codec::mon_codec() :nb(0) {}
+//mon_codec::mon_codec(): nb(0) {}
+
+mon_codec::mon_codec(int w, int h, int fps): nb(0) 
+{
+    avcodec_register_all();
+    codec = avcodec_find_encoder(AV_CODEC_ID_H264);
+    encoder = avcodec_alloc_context3(codec);
+    encoder->width = w;
+    encoder->height = h;
+    encoder->pix_fmt = AV_PIX_FMT_YUV420P;
+    encoder->time_base = (AVRational) {1,fps};
+    encoder->framerate = (AVRational) {fps,1};
+    encoder->gop_size = fps/2;
+    encoder->max_b_frames = 1;
+    encoder->bit_rate = w * h * fps * 0.5;
+
+    av_opt_set(encoder->priv_data, "preset", "veryfast", 0);
+    av_opt_set(encoder->priv_data, "tune", "zerolatency", 0);
+    if(avcodec_open2(encoder, codec, NULL) < 0)
+    {
+        fprintf(stderr, "could not open codec\n");
+        exit(1);
+    }
+
+    codec2 = avcodec_find_decoder(AV_CODEC_ID_H264);
+
+    decoder = avcodec_alloc_context3(codec2);
+    if(avcodec_open2(decoder, codec2, NULL) < 0)
+    {
+        fprintf(stderr, "could not open codec\n");
+        exit(1);
+    }
+
+    frame = av_frame_alloc();    
+    if (!frame) {
+        fprintf(stderr, "Could not allocate video frame\n");
+        exit(1);
+    }
+    frame->height = h;
+    frame->width = w;
+    frame->format = AV_PIX_FMT_YUV420P;
+    av_frame_get_buffer(frame, 0);
+}
 
 int mon_codec::init(AVCodecID id, int w, int h, AVPixelFormat px, int fps)
 {

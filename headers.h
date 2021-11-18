@@ -16,6 +16,18 @@
 #include "libyuv.h"
 #include "libyuv/convert.h"
 
+extern "C" {
+
+}
+#include <unistd.h>
+#include <sys/types.h> 
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+
+
+
 extern bool running;
 
 #endif

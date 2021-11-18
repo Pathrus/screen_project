@@ -5,11 +5,12 @@
 #include "headers.h"
 #include "fifo.hpp"
 #include "codec.hpp"
+#include "socket.hpp"
 
 class receiver
 {
     public:
-        receiver(fifo &fif, int cols, int rows, float ratio, AVCodecID id, AVPixelFormat px, int fps);
+        receiver(fifo &fif, int cols, int rows, float ratio, int fps);
         void getElem(AVPacket *pkt);
         void operator()();
         void render(cv::Mat mat, AVFrame *f);
@@ -22,6 +23,7 @@ class receiver
         fifo& fr;
         int max;
         float ratio;
+        Socket sock;
 };
 
 #endif

@@ -5,12 +5,13 @@
 #include "fifo.hpp"
 #include "ScreenCapture.hpp"
 #include "codec.hpp"
+#include "socket.hpp"
 
 class sender
 {
     public:
         
-        sender(fifo &fif, int rows, int cols, AVCodecID id, AVPixelFormat px, int fps);
+        sender(fifo &fif, int rows, int cols, int fps);
         void send(AVPacket *pkt);
         void operator()();
         ~sender();
@@ -21,6 +22,7 @@ class sender
         ScreenCapture sc;
         mon_codec codec;
         AVFrame* f;
+        Socket sock;
 };
 
 #endif
