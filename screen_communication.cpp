@@ -16,12 +16,16 @@ void thread_sender(int width, int height, AVCodecID id, AVPixelFormat px, int fp
     std::cout << "Debut thread sender" << std::endl;
     std::string ip = "127.0.0.1";
     int port = 1234;
-    
+   
+/*
     Socket sender(ip, port, "client");
     //sender.binding();
-    char *buffer = "test";
-    sender.sendTo(buffer, sizeof(buffer));
-    
+    //char *buffer = "test";
+    std::string buffer = "test";
+    //sender.sendTo(buffer, sizeof(buffer));
+    sender.sendTo(buffer.c_str(), buffer.length());
+*/    
+
 /*
     struct sockaddr_in client_addr, serv_addr;
     int sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -41,8 +45,8 @@ void thread_sender(int width, int height, AVCodecID id, AVPixelFormat px, int fp
     std::cout << "send: " << ret << std::endl;
 */
 
-    //sender mon_sender(fif, width, height, fps);
-    //mon_sender();
+    sender mon_sender(fif, width, height, fps);
+    mon_sender();
     std::cout << "Fin thread sender" << std::endl;
 }
 
@@ -55,14 +59,15 @@ void thread_receiver(int width, int height, AVCodecID id, AVPixelFormat px, int 
     std::string ip = "127.0.0.1";
     //std::string ip = "";
 
-    
+/*    
     Socket receiver(ip, port, "server");
     receiver.binding();
     char buffer[256];
     receiver.recvFrom(buffer, sizeof(buffer));
     std::cout << "recv " << buffer << std::endl;
     //printf("Here is the message: %s\n",buffer);
-    
+*/
+
     /*
     int sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     struct sockaddr_in serv_addr;
@@ -79,8 +84,8 @@ void thread_receiver(int width, int height, AVCodecID id, AVPixelFormat px, int 
     std::cout << "recv " << buffer << std::endl;
     */
 
-    //receiver mon_receiver(fif, width, height, ratio, fps);
-    //mon_receiver();
+    receiver mon_receiver(fif, width, height, ratio, fps);
+    mon_receiver();
     std::cout << "Fin thread receiver" << std::endl;
 }
 
@@ -110,8 +115,8 @@ int main(int argc, char* argv[])
     //th_send.detach();
     //th_rec.detach();
     
-    //signal(SIGINT, [](int) { stop = true; });
-    //while(!stop){}
+    signal(SIGINT, [](int) { stop = true; });
+    while(!stop){}
 
     running = false;
 

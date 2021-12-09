@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.10)
+
+# set the project name
+project(Screen_project)
+
+set(CMAKE_BUILD_TYPE Release)
+
+enable_language(CXX)
+
+set(flags_to_test
+    -lX11
+    -lyuv
+    -lrt
+    -pthread
+
+)
+
+add_executable(screen_com
+    )
+
+
+# add the executable
+add_executable(screen_com tutorial.cxx)
