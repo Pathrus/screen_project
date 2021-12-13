@@ -17,7 +17,8 @@
 #include "libyuv/convert.h"
 
 extern "C" {
-
+    //#include <libavformat/avformat.h>
+    //#include <libavutil/opt.h>
 }
 #include <unistd.h>
 #include <sys/types.h> 

@@ -84,6 +84,6 @@ int Socket::recvFrom(char* buffer, int len)
         return ret;
     }
     //recv(sockfd, buffer, len, 0);
-    //std::cout << "recv " << ret << std::endl;
+    std::cout << "recv " << ret << std::endl;
     return ret;
 }

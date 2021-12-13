@@ -42,9 +42,9 @@ void receiver::operator()()
     while (running)
     {
         //getElem(pkt);
-        //sock.recvFrom(reinterpret_cast<char*>(pkt->data), pkt->size);
+        //nb = sock.recvFrom(reinterpret_cast<char*>(pkt->data), size_max);
         nb = sock.recvFrom(buffer, size_max);
-        //std::cout << "Receiv - size " << size_max << std::endl;
+        std::cout << "Receiv - size " << size_max <<", nb: " << nb << std::endl;
         // if(nb = 8) || nb == 1 ?
         if(strncmp(buffer, "pkt", 3) == 0)
         {
@@ -63,14 +63,16 @@ void receiver::operator()()
             nb = sock.recvFrom(in + n*size_max, size_max);
             //nb = sock.recvFrom(reinterpret_cast<char*>(pkt->data+n*size_max) , size_max);
             //memcpy(reinterpret_cast<void*>(&pkt->data[t]), reinterpret_cast<void*>(padding), 32);
-            memcpy(reinterpret_cast<void*>(in), reinterpret_cast<void*>(padding), 32);
+            //memcpy(reinterpret_cast<void*>(in), reinterpret_cast<void*>(padding), 32);
             av_packet_from_data(pkt, reinterpret_cast<uint8_t*>(in), t);
             //std::cout << "R-pts: " << pkt->pts << " dts: " << pkt->dts << " size: " << pkt->size \
             //    << " st_i: " << pkt->stream_index << " f" << pkt->flags << " pos" << pkt->pos << std::endl;
         }
         else{
-            nb = sock.recvFrom(reinterpret_cast<char*>(pkt->data), pkt->size);
-            std::cout << "Receiv - size " << pkt->size << std::endl;
+            av_packet_from_data(pkt, reinterpret_cast<uint8_t*>(buffer), nb);
+            //nb = sock.recvFrom(reinterpret_cast<char*>(pkt->data), pkt->size);
+            //memcpy(reinterpret_cast<void*>(pkt->data), reinterpret_cast<void*>(buffer), nb);
+            //std::cout << "Receiv - size " << pkt->size << std::endl;
         }
         //nb = sock.recvFrom(reinterpret_cast<char*>(pkt->data) + size_max*n, size_max);
         //nb = sock.recvFrom(buffer, size_max);
@@ -79,7 +81,7 @@ void receiver::operator()()
 
         codec.decode(out, pkt, f);
         if(f->pts){
-            //render(out, f);
+            render(out, f);
         }
     }
     while(1)

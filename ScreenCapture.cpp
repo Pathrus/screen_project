@@ -13,8 +13,9 @@ ScreenCapture::ScreenCapture()
 
 cv::Mat ScreenCapture::GetImage()
 {
-    XImage* img = XGetImage(display, DefaultRootWindow(display), 0, 0, width, height, AllPlanes, ZPixmap);
-    cv::Mat tmp(height, width, CV_8UC4,  img->data);
+    //XImage* img = XGetImage(display, DefaultRootWindow(display), 0, 0, width, height, AllPlanes, ZPixmap);
+    //cv::Mat tmp(height, width, CV_8UC4,  img->data);
+    cv::Mat tmp(height, width, CV_8UC4, cv::Scalar(128,128,128));
     return tmp;
 }
 
